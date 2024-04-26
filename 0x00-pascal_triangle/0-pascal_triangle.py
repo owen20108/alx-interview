@@ -1,45 +1,40 @@
-# Recusrive method to create the series
-def computePascal(col, row):
-    # There are three things to compute
-    # 1. Left edge: col is 0
-    # 2. Right edge: col is same as row
-    if col == row or col == 0:
-        return 1
-    # 3. any other cell: col-1 + col of the previous row
-    else:
-        return computePascal(col - 1, row - 1) + computePascal(col, row - 1)
+#!/usr/bin/python3
+'''Module to find Pascal's Triangle integers'''
 
 
-# Method to create the triangle for `N` row
-def printTriangle(num):
-    for r in range(num):
-        # upon observation, we can deduce the relation
-        # num_cols = num_rows + 1
-        for c in range(r + 1):
-            print(str(computePascal(c, r)), end=" ")
-        print("\n")
+def pascal_triangle(n):
+    '''
+    Function to find Pascal's Triangle integers
 
+        Parameters:
+            n (int): The number of row's of Pascal's triangle
 
-printTriangle(10)
-"""
-Output:
-1 
+        Returns:
+            pascal_triangle (list): Binary string of the sum of a and b
+    '''
+    pascal_triangle = list()
 
-1 1 
+    if n <= 0:
+        return pascal_triangle
 
-1 2 1 
+    # Add first 1.
+    if n > 0:
+        pascal_triangle.append([1])
 
-1 3 3 1 
+    # Add second line.
+    if n > 1:
+        pascal_triangle.append([1, 1])
 
-1 4 6 4 1 
+    for x in range(3, n+1):
+        pascal_triangle.append([0] * x)
 
-1 5 10 10 5 1 
+        # Set first and last 1
+        pascal_triangle[x-1][0] = 1
+        pascal_triangle[x-1][x-1] = 1
 
-1 6 15 20 15 6 1 
+        # Calculate middle numbers
+        for y in range(1, x-1):
+            pascal_triangle[x-1][y] = \
+                pascal_triangle[x-2][y-1] + pascal_triangle[x-2][y]
 
-1 7 21 35 35 21 7 1 
-
-1 8 28 56 70 56 28 8 1 
-
-1 9 36 84 126 126 84 36 9 1 
-"""
+    return pascal_triangle
