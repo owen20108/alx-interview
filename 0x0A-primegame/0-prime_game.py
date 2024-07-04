@@ -1,29 +1,46 @@
 #!/usr/bin/python3
-""" Module for solving prime game question """
+"""Module for solving prime game question"""
 
 def isWinner(x, nums):
-    """function that checks for the winner"""
+    """Function that determines the winner of the prime game"""
+    
     if not nums or x < 1:
         return None
+    
     max_num = max(nums)
-
-    my_filter = [True for _ in range(max(max_num + 1, 2))]
+    
+    # Step 1: Generate the prime numbers using Sieve of Eratosthenes
+    sieve = [True] * (max(max_num + 1, 2))
+    sieve[0], sieve[1] = False, False  # 0 and 1 are not prime numbers
+    
     for i in range(2, int(pow(max_num, 0.5)) + 1):
-        if not my_filter[i]:
-            continue
-        for j in range(i * i, max_num + 1, i):
-            my_filter[j] = False
-    my_filter[0] = my_filter[1] = False
-    y = 0
-    for i in range(len(my_filter)):
-        if my_filter[i]:
-            y += 1
-        my_filter[i] = y
-    player1 = 0
-    for x in nums:
-        player1 += my_filter[x] % 2 == 1
-    if player1 * 2 == len(nums):
-        return None
-    if player1 * 2 > len(nums):
+        if sieve[i]:
+            for j in range(i * i, max_num + 1, i):
+                sieve[j] = False
+    
+    # Step 2: Create an array of prime counts up to each index
+    prime_count = [0] * (max_num + 1)
+    count = 0
+    for i in range(len(sieve)):
+        if sieve[i]:
+            count += 1
+        prime_count[i] = count
+    
+    # Step 3: Determine the number of rounds won by Maria
+    maria_wins = 0
+    for num in nums:
+        if prime_count[num] % 2 == 1:
+            maria_wins += 1
+    
+    # Step 4: Determine the overall winner
+    if maria_wins > x / 2:
         return "Maria"
-    return "Ben"
+    elif maria_wins < x / 2:
+        return "Ben"
+    else:
+        return None
+
+# Example usage:
+if __name__ == "__main__":
+    print("Winner: {}".format(isWinner(5, [2, 5, 1, 4, 3])))
+
