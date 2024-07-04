@@ -3,7 +3,6 @@
 Prime Game
 '''
 
-
 def get_primes(nums):
     '''
     Get the count of primes up to each number in nums
@@ -31,7 +30,6 @@ def get_primes(nums):
 
     return prime_cnt
 
-
 def isWinner(x, nums):
     '''
     Determine the winner of the prime game
@@ -52,7 +50,6 @@ def isWinner(x, nums):
         return "Ben"
     else:
         return None
-
 
 # Example usage
 if __name__ == "__main__":
